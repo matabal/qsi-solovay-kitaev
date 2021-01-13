@@ -1,0 +1,11 @@
+name = "gridrotations"
+uuid = "8ff4690c-9433-4d47-9f51-4b0004581ad4"
+authors = ["Ata Bal "]
+version = "0.1.0"
+
+[deps]
+ImplicitEquations = "95701278-4526-5785-aba3-513cca398f19"
+ImplicitPlots = "55ecb840-b828-11e9-1645-43f4a9f9ace7"
+ORCA = "47be7bcc-f1a6-5447-8b36-7eeeff7534fd"
+Plotly = "58dd65bb-95f3-509e-9936-c39a10fdeae7"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
