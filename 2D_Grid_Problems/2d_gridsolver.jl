@@ -1,4 +1,5 @@
 
+
 # prog = Meta.parse("x^2 - 2y") this will come handy 
 const e = MathConstants.e
 const omega =  e^((im*pi)/4)
@@ -9,6 +10,8 @@ struct Grid
     equation::Function
     Grid(expr) = new(expr_to_func(expr))
 end
+#findEnclosingEllipse(grid::Grid) = Grid()
+
 
 # Testin Below
 ex = Meta.parse("x^2 - y^2 - 2")

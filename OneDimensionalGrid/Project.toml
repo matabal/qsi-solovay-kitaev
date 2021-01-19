@@ -1,0 +1,6 @@
+authors = ["atabal "]
+name = "OneDimensionalGrid"
+uuid = "ca6179d4-5a16-11eb-2686-d712c4131ac0"
+version = "0.1.0"
+
+[deps]
