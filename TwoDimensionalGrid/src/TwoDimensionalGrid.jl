@@ -6,11 +6,11 @@
 
 module TwoDimensionalGrid
 
-include("Point.jl")
-using ..Point: Point1D, Point2D, getPointValue, getBullet, isInGrid
+include("Points.jl")
+using ..Points: Point1D, Point2D, getPointValue, getBullet, isInGrid
 
-include("Grid.jl")
-using ..Grid: Grid1D, GridRectangle, GridAny
+include("Grids.jl")
+using ..Grids: Grid1D, GridRectangle, GridAny
 
 include("OneDimensionalGrid.jl")
 using ..OneDimensionalGrid: solver1D

@@ -1,4 +1,4 @@
-module Grid
+module Grids
 
 export Grid1D, GridRectangle, GridAny, getSize, getArea
 

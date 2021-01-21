@@ -1,12 +1,28 @@
-# Testing Below 
+
+
+include("Points.jl")
+using .Points: Point1D, Point2D, getPointValue, getBullet 
+
+include("Grids.jl")
+using .Grids: Grid1D, GridRectangle, GridAny
 
 include("OneDimensionalGrid.jl")
-using .OneDimensionalGrid: Point, Interval
+using .OneDimensionalGrid: solver1D
 
-include("RectangularGrid.jl")
-using .RectangularGrid: RectangleGrid, Point2D, getArea, getBullet2D
 
-p = Point2D(Point(2,3), Point(1,4))
-b = getBullet2D(p)
-println("Point: ", p)
-println("Bullet: ", b)
+
+function main()
+
+    # Testing Below 
+    A = Grid1D(4,6)
+    B = Grid1D(-3,3)
+
+    sols = solver1D(A,B)
+    println("Solutions: ")
+    for s in sols
+        println("$(s.a) + $(s.b)√2 = ", getPointValue(s))
+    end
+
+end
+
+main()

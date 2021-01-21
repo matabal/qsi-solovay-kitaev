@@ -2,12 +2,12 @@ module OneDimensionalGrid
 
 export solver1D
 
-include("Point.jl")
-using ..Point: Point1D, getPointValue, getBullet, isInGrid
-include("Grid.jl")
-using ..Grid: Grid1D
+include("Points.jl")
+using ..Points: Point1D, getPointValue, getBullet
+include("Grids.jl")
+using ..Grids: Grid1D
 
-isPointInGrid(point::Point1D, grid::Grid1D) = getPoint(point) >= grid.lower_bound && getPoint(point) <= grid.upper_bound ? true : false
+isPointInGrid(point::Point1D, grid::Grid1D) = getPointValue(point) >= grid.lower_bound && getPointValue(point) <= grid.upper_bound ? true : false
 findNextClosestInt(f::Float64) = round(Int, f, RoundUp)
 
 function findIntegersInGrid(i::Grid1D)
