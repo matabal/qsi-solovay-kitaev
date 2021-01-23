@@ -1,6 +1,6 @@
 module OneDimensionalGrid
 
-export solver1D
+export solve1D
 
 include("Points.jl")
 using ..Points: Point1D, getPointValue, getBullet
@@ -37,7 +37,7 @@ function enumarateSolutions(A::Grid1D, B::Grid1D, bs::Array)
     return solutions
 end
 
-function solver1D(A::Grid1D, B::Grid1D)
+function solve1D(A::Grid1D, B::Grid1D)
     bs = findIntegersInGrid(getIntervalFor_b(A, B))
     return enumarateSolutions(A, B, bs) 
 end

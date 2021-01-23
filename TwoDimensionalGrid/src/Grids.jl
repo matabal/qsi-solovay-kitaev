@@ -1,6 +1,6 @@
 module Grids
 
-export Grid1D, GridRectangle, GridAny, getSize, getArea
+export Grid1D, GridRectangle, GridAny, getSize, getArea, shiftGrid
 
 abstract type Grid end
 struct Grid1D <: Grid
@@ -8,7 +8,8 @@ struct Grid1D <: Grid
     lower_bound::Real
     Grid1D(x, y) = x > y ? new(x, y) : new(y, x) 
 end
-getSize(i::Grid1D) = i.upper_bound - i.lower_bound
+getSize(grid::Grid1D) = grid.upper_bound - grid.lower_bound
+shiftGrid(grid::Grid1D, shifter::Real) = Grid1D(grid.upper_bound+shifter, grid.lower_bound+shifter) 
 
 abstract type Grid2D <: Grid end
 struct GridRectangle <: Grid2D 
