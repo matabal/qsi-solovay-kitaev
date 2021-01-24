@@ -39,14 +39,14 @@ function solve2DRectangles(A::GridRectangle, B::GridRectangle)
     println("Expected Solutions: ")
     for sol1 in solutions1_alpha
         for sol2 in solutions1_beta
-            println("Solution:  $(getPointValue(sol1)) + $(getPointValue(sol2))i")
+            println("Solution:  $(sol1) + $(sol2)i")
         end
     end
 
     println("Problematic Ones: ")
     for sol1 in solutions2_alpha
         for sol2 in solutions2_beta
-            println("Solution:  $(getPointValue(sol1)) + $(getPointValue(sol2))i")
+            println("Solution:  $(sol1) + $(sol2)i")
         end
     end
 
