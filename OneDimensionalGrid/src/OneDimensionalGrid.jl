@@ -1,6 +1,6 @@
 module OneDimensionalGrid
 
-export getIntervalFor_b, findIntegersInInterval, enumarateSolutions, Point, getPoint, getBullet, Interval, getSize, isInInterval
+export solve, rescaleSolution, lambda_inverse, scaleIntervals, getIntervalFor_b, findIntegersInInterval, enumarateSolutions, Point, getPoint, getBullet, Interval, getSize, isInInterval
 
 findNextClosestInt(f::Float64) = round(Int, f, RoundUp)
 
@@ -22,16 +22,20 @@ end
 getSize(i::Interval) = i.upper_bound - i.lower_bound
 scaleByLambdaInverse(i::Interval) = Interval(i.upper_bound*getPoint(lambda_inverse), i.lower_bound*getPoint(lambda_inverse))
 scaleByLambdaNegative(i::Interval) = Interval(i.upper_bound*getPoint(lambda)*-1, i.lower_bound*getPoint(lambda)*-1)
-
 isInInterval(point::Point, i::Interval) = getPoint(point) >= i.lower_bound && getPoint(point) <= i.upper_bound ? true : false
 
-function rescaleIntervals(A::Interval, B::Interval)
+function scaleIntervals(A::Interval, B::Interval)
+    k = 0 
     while getSize(A) >= 1
         A = scaleByLambdaInverse(A)
         B = scaleByLambdaNegative(B)
+        k += 1
     end
-    return Dict([("A", A), ("B", B)])
+    return k, Dict([("A", A), ("B", B)])
 end
+
+getRescalingValue(k::Int) = 1/(getPoint(lambda_inverse)^k)
+rescaleSolution(point::Point, scaling_factor::Int) = getPoint(point) *getRescalingValue(scaling_factor)
 
 function findIntegersInInterval(i::Interval)
     next_int = findNextClosestInt(i.lower_bound)
@@ -43,18 +47,10 @@ function findIntegersInInterval(i::Interval)
     return integers
 end
 
-
-
 getIntervalFor_b(A::Interval, B::Interval) = Interval((A.upper_bound - B.lower_bound)/sqrt(8), (A.lower_bound - B.upper_bound)/sqrt(8))
 getIntervalFor_a(A::Interval, b::Int) = Interval(A.upper_bound - b*sqrt(2), A.lower_bound - b*sqrt(2))
 
-function checkSolution(A::Interval, B::Interval, solution::Point)
-    if isInInterval(solution, A) && isInInterval(getBullet(solution), B)
-        return true
-    else
-        return false
-    end
-end
+checkSolution(A::Interval, B::Interval, solution::Point) = isInInterval(solution, A) && isInInterval(getBullet(solution), B) ? true : false
 
 function enumarateSolutions(A::Interval, B::Interval, bs::Array)
     solutions = Point[]
@@ -68,5 +64,11 @@ function enumarateSolutions(A::Interval, B::Interval, bs::Array)
     return solutions
 end
 
+function solve(A::Interval, B::Interval)
+    k, scaled_intervals = scaleIntervals(A, B)
+    bs = findIntegersInInterval(getIntervalFor_b(scaled_intervals["A"], scaled_intervals["B"]))
+    scaled_solutions = enumarateSolutions(scaled_intervals["A"], scaled_intervals["B"], bs)
+    return k, scaled_solutions, [rescaleSolution(solution, k) for solution in scaled_solutions]
+end
 
 end # module
