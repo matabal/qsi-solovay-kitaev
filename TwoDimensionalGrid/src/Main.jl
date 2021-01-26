@@ -20,22 +20,6 @@ function main()
     B = GridRectangle(Grid1D(-1,1), Grid1D(-1,1))
     solve2DRectangles(A, B)
     
-    #
-
-    
-
-    #= Testing 1D Grids Below
-
-    A = Grid1D(-8,-4)
-    B = Grid1D(-3,3)
-
-    sols = solve1D(A,B)
-    println("Solutions: ")
-    for s in sols
-        println("$(s.a) + $(s.b)√2 = ", getPointValue(s))
-    end
-    
-    =#
 end
 
 main()
