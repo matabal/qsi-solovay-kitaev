@@ -6,7 +6,7 @@ findNextClosestInt(f::Float64) = round(Int, f, RoundUp)
 
 struct Point
     #= Struct to represent a point in Z[√2] ring defined in Ross & Selinger (2016), pg. 3. The integers 
-    a and b are used exactly as defined in the paper where a is an integer and b is the coefficient of the √2.=#
+    a and b are used exactly as defined in the paper where a is an integer and b is the coefficient of √2.=#
     a::Int
     b::Int
 end
@@ -27,7 +27,7 @@ struct Interval
 end
 getSize(i::Interval) = i.upper_bound - i.lower_bound
 
-#= Below is a general scaling operation that scales an interval by a given Point or number. =#
+# Below is a general scaling operation that scales an interval by a given Point or number.
 scaleInterval(i::Interval, scaler::Point) = Interval(i.upper_bound*getPoint(scaler), i.lower_bound*getPoint(scaler))
 scaleInterval(i::Interval, scaler::Real) = Interval(i.upper_bound*scaler, i.lower_bound*scaler)
 
@@ -63,7 +63,7 @@ function findIntegersInInterval(i::Interval)
 end
 
 #= Two functions defined below, namely getIntervalFor_a and getIntervalFor_b, 
-corresponds to the operations defined by Ross & Selinger (2016), in pg. 4. where
+correspond to the operations defined by Ross & Selinger (2016), in pg. 4, where
 the Proof for Proposition 4.5 is given. =#
 getIntervalFor_b(A::Interval, B::Interval) = Interval((A.upper_bound - B.lower_bound)/sqrt(8), (A.lower_bound - B.upper_bound)/sqrt(8))
 getIntervalFor_a(A::Interval, b::Int) = Interval(A.upper_bound - b*sqrt(2), A.lower_bound - b*sqrt(2))
