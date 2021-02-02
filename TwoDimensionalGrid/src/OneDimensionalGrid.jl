@@ -21,7 +21,7 @@ function scaleGrids(A::Grid1D, B::Grid1D)
     #= Performs the scaling of 1D grids as outlined by Ross & Selinger (2016) in pg. 4 
     for solving 1D grid problems. =#
     k = 0 
-    while getSize(A) >= 1
+    while getSize(A) <= 1
         A = scaleGrid(A, lambda_inverse) # Scales A by lambda inverse,
         B = scaleGrid(B, -1*getPointValue(lambda)) # and B by negative lambda.
         k += 1
