@@ -64,10 +64,29 @@ function destructEllipseExpression(equation::String)
         return A, B, C, S, h, k
     catch e
         println("Please enter the ellipse as defined by the standard equation of an ellipse. i.e., 
-        A*(x − h)^2 + B*(x − h)*(y − k) + C*(y − k)^2 - S = 0")
+        A*(x − h)^2 + B*(x − h)*(y − k) + C*(y − k)^2 - S")
         return nothing
     end
 end
+
+#= 
+The functions below, namely getQuadraticCoefficient_Y, getQuadraticCoefficient_X, 
+getQuadraticFunction_Y, getQuadraticFunction_X, getRoots_Y, getRoots_X, getBoundingBox
+are mathematical operationgs defined for calculating the bounding box of an ellipse grid.
+These operations are defined based on information from link, 
+https://math.stackexchange.com/questions/922806/how-to-find-the-outermost-points-in-an-ellipse
+where the user Mark Bennet explained the method for finding the outermost points of an ellipse. 
+
+Note that, they will only work with the standard equation of an ellipse given as an input, i.e., 
+A*(x − h)^2 + B*(x − h)*(y − k) + C*(y − k)^2 - S = 0
+given without the "= 0" part at the end.
+
+If these operations need to be extended for non-quadratic cases, following libraries can be useful:
+    https://github.com/JuliaMath/Roots.jl                       --> For finding the roots of any function.
+    https://github.com/JuliaIntervals/IntervalRootFinding.jl/   --> For finding the roots of any function.
+    https://github.com/JuliaStaging/GeneralizedGenerated.jl     --> For converting regular expressions in subroutines without the "World Age" problem.
+    https://github.com/JuliaMath/Calculus.jl                    --> For calculating derivatives. Symbolic or numeric.
+=#
 
 getQuadraticCoefficient_Y(grid::GridEllipse) = (((grid.B)^2)/(4*grid.A)) - (((grid.B)^2)/(2*grid.A)) + grid.C
 getQuadraticCoefficient_X(grid::GridEllipse) = (((grid.B)^2)/(4*grid.C)) - (((grid.B)^2)/(2*grid.C)) + grid.A
@@ -110,85 +129,3 @@ end
 
 end # module
 
-
-
-#=
-function getCoefficient(element::String) 
-    coefficient = 1.0
-    for sym in split(element, "*")
-        if isNumber(String(sym))
-            coefficient *= parse(Float64, String(sym))
-        end
-    end
-    return coefficient
-end
-=#
-
-
-
-
-#=
-
-function equationToElements(equation::String) 
-    chars = map(String, split(equation, ""))
-    println(chars)
-    elements = String[]
-    element = ""
-    for char in chars
-        if char == "+" || char == "-"
-            push!(elements, element)
-            element = char
-        else
-            element = string(element, char)
-        end
-    end
-    push!(elements, element)
-    elements = map(x->replace(x, " " => "", count = 4), elements)
-
-    return elements
-end
-
-function simplifyElement(element::String)
-    chars = map(string, split(element, "*"))
-    coefficient = 1
-    symbolic = ""
-    for char in chars
-        if isNumber(char)
-            coefficient *= eval(Meta.parse(char))
-        else
-            symbolic = string(symbolic ,char)
-        end
-    end
-    
-    is_numerical_power = true
-    for char in split(symbolic, "^")
-        if !isNumber(string(char)) is_numerical_power = false end 
-    end
-
-    if is_numerical_power
-        coefficient *= eval(Meta.parse(symbolic))
-        return string(coefficient)
-    end
-
-    if symbolic == "" return string(coefficient)
-    else return string(string(coefficient), "*", symbolic) end
-    
-end
-
-function splitEquation(equation::String, variable::String ,value::String) 
-    exchanged_equation = replace(equation, variable => value)
-    elements = equationToElements(exchanged_equation)
-    simplified_elements = map(simplifyElement, elements)
-    new_equation = ""
-    for element in simplified_elements
-         new_equation = string(new_equation , element, " + ")
-    end
-    return chop(new_equation, tail = 2)
- end
-
-exprToFunc(expr::Expr, var1::Symbol) = @eval ($var1) -> $expr
-exprToFunc(expr::Expr, var1::Symbol, var2::Symbol) = @eval ($var1, $var2) -> $exprs
-isNumber(string::String) = tryparse(Float64, string) !== nothing
-
-
-=#
