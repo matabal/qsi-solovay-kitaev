@@ -10,12 +10,12 @@ include("Points.jl")
 using ..Points: Point1D, Point2D, getPointValue, getBullet
 
 include("Grids.jl")
-using ..Grids: Grid1D, GridRectangle, GridEllipse, shiftGrid
+using ..Grids: Grid1D, GridRectangle, GridEllipse, shiftGrid, calculateCannonical
 
 include("OneDimensionalGrid.jl")
 using ..OneDimensionalGrid: solve1D
 
-export solve2DRectangles
+export solve2DRectangles, isInGrid
 
 const e = MathConstants.e
 const omega =  e^((im*pi)/4)
@@ -23,6 +23,7 @@ const omega_rectangular = (1 + im) / sqrt(2)
 const omega_rectangular_shifter = 1/sqrt(2)
 const neg_omega_rectangular_shifter = -1/sqrt(2)
 
+isInGrid(grid::GridEllipse, point::Point2D) = calculateCannonical(grid, getPointValue(point.X_point), getPointValue(point.Y_point)) < 0 ? true : false
 
 function solve2DRectangles(A::GridRectangle, B::GridRectangle)
 

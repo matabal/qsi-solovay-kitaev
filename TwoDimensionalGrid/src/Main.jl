@@ -2,19 +2,27 @@ include("Points.jl")
 using .Points: Point1D, Point2D, getPointValue, getBullet 
 
 include("Grids.jl")
-using .Grids: Grid1D, GridRectangle, GridEllipse, getBoundingBox
+using .Grids: Grid1D, GridRectangle, GridEllipse, getBoundingBox, getArea, getUprightness
 
 include("OneDimensionalGrid.jl")
 using .OneDimensionalGrid: solve1D
 
 include("TwoDimensionalGrid.jl")
-using .TwoDimensionalGrid: solve2DRectangles
+using .TwoDimensionalGrid: solve2DRectangles, isInGrid
 
 function main()
 
     # Testing Bounding Box Function Below
-    grid = GridEllipse("5*(x - 2)^2 + 2*(x - 2)*(y - 3) + 3*(y - 3)^2 - 2")
-    println(getBoundingBox(grid))
+    
+    #A*(x − h)^2 + B*(x − h)*(y − k) + C*(y − k)^2 - S = 0
+    grid = GridEllipse("3*(x - 0)^2 + 5*(x - 0)*(y - 0) + 3*(y - 0)^2 - 124")
+    p1 = Point1D(1, 2)
+    p2 = Point1D(-1, 2)
+    point_true = Point2D(p1, p2)
+    point_false = Point2D(p1, p1)
+    println(isInGrid(grid, point_true))
+    println(isInGrid(grid, point_false))
+
 
     # Testing 2D Rectangle Grids Below
     #A = GridRectangle(Grid1D(1.3,4), Grid1D(0.3,4))

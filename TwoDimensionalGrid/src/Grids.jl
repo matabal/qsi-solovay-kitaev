@@ -1,6 +1,6 @@
 module Grids
 
-export Grid1D, GridRectangle, GridEllipse, getSize, getArea, shiftGrid, getBoundingBox
+export Grid1D, GridRectangle, GridEllipse, getSize, getArea, shiftGrid, getBoundingBox, getUprightness, calculateCannonical
 
 abstract type Grid end 
 
@@ -14,6 +14,7 @@ struct Grid1D <: Grid
     Grid1D(x, y) = x > y ? new(x, y) : new(y, x) 
 end
 getSize(grid::Grid1D) = grid.upper_bound - grid.lower_bound
+canGridExist(grid::Grid1D) = getSize(grid) > 0 ? true : false # Checks if a given grid can exist.
 shiftGrid(grid::Grid1D, shifter::Real) = Grid1D(grid.upper_bound+shifter, grid.lower_bound+shifter) # Shifts a grid by real number.
 
 abstract type Grid2D <: Grid end
@@ -24,7 +25,7 @@ struct GridRectangle <: Grid2D
     Y::Grid1D
 end
 getArea(grid::GridRectangle) = getSize(grid.X)*getSize(grid.Y)
-
+canGridExist(grid::GridRectangle) = canGridExist(grid.X) && canGridExist(grid.Y) ? true : false
 # 2D Grids Below
 
 struct GridEllipse <:Grid2D 
@@ -42,6 +43,9 @@ struct GridEllipse <:Grid2D
         new(A, B, C, S, h, k)
     end
 end
+getArea(grid::GridEllipse) = grid.S*((2*pi)/(sqrt(4*grid.A*grid.C - (grid.B)^2)))
+calculateCannonical(grid::GridEllipse, x::Real, y::Real) = grid.A*((x - grid.h)^2) + grid.B*(x - grid.h)*(y - grid.k) + grid.C*((y - grid.k)^2) - grid.S
+
 function destructEllipseExpression(equation::String)
     expr = Meta.parse(equation)
     A = B = C = S = h = k = 0
@@ -63,11 +67,10 @@ function destructEllipseExpression(equation::String)
         end
         return A, B, C, S, h, k
     catch e
-        println("Please enter the ellipse as defined by the standard equation of an ellipse. i.e., 
-        A*(x − h)^2 + B*(x − h)*(y − k) + C*(y − k)^2 - S")
-        return nothing
+        return 0, 0, 0, 0, 0, 0 #If given ellipse equation is mistaken, sets every value to 0.
     end
 end
+
 
 #= 
 The functions below, namely getQuadraticCoefficient_Y, getQuadraticCoefficient_X, 
@@ -122,10 +125,35 @@ function getRoots_X(grid::GridEllipse)
 end
 
 function getBoundingBox(grid::GridEllipse)
-    x1, x2 = getRoots_X(grid)
-    y1, y2 = getRoots_Y(grid)
+    x1 = x2 = y1 = y2 = 0 
+    try
+        x1, x2 = getRoots_X(grid)
+        y1, y2 = getRoots_Y(grid)
+    catch e
+        if isa(e, DomainError)
+            x1 = x2 = y1 = y2 = -1 #If entered equation is not a ellipse (i.e., if discriminant < 0), returns a GridRectangle with this values
+        else
+            println(e)
+        end
+    end
     return GridRectangle(Grid1D(x1, x2), Grid1D(y1, y2))
 end
+
+function canGridExist(grid::GridEllipse)
+    if grid.A + grid.B + grid.C + grid.S + grid.h + grid.k == 0
+        return false
+    end
+    
+    boundingBox = getBoundingBox(grid)
+    if !canGridExist(grid)
+        return false
+    end
+    return true
+end
+
+getUprightness(grid::GridEllipse) = getArea(grid) / getArea(getBoundingBox(grid))
+
+
 
 end # module
 
