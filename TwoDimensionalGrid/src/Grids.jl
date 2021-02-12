@@ -154,6 +154,5 @@ end
 getUprightness(grid::GridEllipse) = getArea(grid) / getArea(getBoundingBox(grid))
 
 
-
 end # module
 

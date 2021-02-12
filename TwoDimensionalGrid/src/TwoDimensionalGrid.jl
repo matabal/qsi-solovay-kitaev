@@ -7,23 +7,33 @@
 module TwoDimensionalGrid
 
 include("Points.jl")
-using ..Points: Point1D, Point2D, getPointValue, getBullet
+using ..Points: Point1D, Point2D, Point2D_StandardForm, Point2D_NormalForm, getPointValue, getBullet, getVectorForm
 
 include("Grids.jl")
 using ..Grids: Grid1D, GridRectangle, GridEllipse, shiftGrid, calculateCannonical
 
+include("GridOperators.jl")
+using ..GridOperators: GridOperator, getOperatorMatrix
+
 include("OneDimensionalGrid.jl")
 using ..OneDimensionalGrid: solve1D
 
-export solve2DRectangles, isInGrid
-
+export solve2DRectangles, isInGrid, applyGridOperator
 const e = MathConstants.e
 const omega =  e^((im*pi)/4)
 const omega_rectangular = (1 + im) / sqrt(2)
 const omega_rectangular_shifter = 1/sqrt(2)
 const neg_omega_rectangular_shifter = -1/sqrt(2)
 
-isInGrid(grid::GridEllipse, point::Point2D) = calculateCannonical(grid, getPointValue(point.X_point), getPointValue(point.Y_point)) < 0 ? true : false
+
+function applyGridOperator(point, operator)
+    operator_matrix = getOperatorMatrix(operator)
+    vector_form = getVectorForm(point)
+    return operator_matrix * vector_form
+end
+
+
+isInGrid(grid::GridEllipse, point::Point2D_NormalForm) = calculateCannonical(grid, getPointValue(point.X_point), getPointValue(point.Y_point)) < 0 ? true : false
 
 function solve2DRectangles(A::GridRectangle, B::GridRectangle)
 
