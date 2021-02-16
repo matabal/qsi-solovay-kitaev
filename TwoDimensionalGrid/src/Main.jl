@@ -15,10 +15,9 @@ using .TwoDimensionalGrid: solve2DRectangles, isInGrid, applyGridOperator
 
 function main()
 
-    operator = GridOperator_Simple(1, sqrt(2), 0, 1)
-    point = Point2D_NormalForm(Point1D(1, 0), Point1D(0, 0))
-    scaled = applyGridOperator(point, operator)
-    println(scaled)
+    A = GridRectangle(Grid1D(1.3,4), Grid1D(0.3,4))
+    B = GridRectangle(Grid1D(-1,1), Grid1D(-1,1))
+    solve2DRectangles(A, B)
     
 end
 
@@ -40,6 +39,13 @@ main()
 =#
 
 # Testing 2D Rectangle Grids Below
-    #A = GridRectangle(Grid1D(1.3,4), Grid1D(0.3,4))
-    #B = GridRectangle(Grid1D(-1,1), Grid1D(-1,1))
-    #solve2DRectangles(A, B)
+    
+
+#= Grid Operators Testing 
+
+    operator = GridOperator_Simple(1, sqrt(2), 0, 1)
+    point = Point2D_NormalForm(Point1D(1, 0), Point1D(0, 0))
+    scaled = applyGridOperator(point, operator)
+    println(scaled)
+
+=#
