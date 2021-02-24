@@ -11,13 +11,17 @@ include("GridOperators.jl")
 using .GridOperators: GridOperator, getOperatorMatrix, GridOperator_Simple
 
 include("TwoDimensionalGrid.jl")
-using .TwoDimensionalGrid: solve2DRectangles, isInGrid, applyGridOperator
+using .TwoDimensionalGrid: solve2DRectangles, isInGrid, applyGridOperator, solve2DEllipses
 
 function main()
 
-    A = GridRectangle(Grid1D(1.3,4), Grid1D(0.3,4))
-    B = GridRectangle(Grid1D(-1,1), Grid1D(-1,1))
-    solve2DRectangles(A, B)
+    grid_A = GridEllipse("3*(x - 15)^2 + 5*(x - 15)*(y - 15) + 3*(y - 15)^2 - 124")
+    grid_B = GridEllipse("3*(x - 0)^2 + 0*(x - 0)*(y - 0) + 3*(y - 0)^2 - 124")
+    solutions = solve2DEllipses(grid_A, grid_B)
+    for sol in solutions
+        println(getPointValue(sol))
+    end
+    
     
 end
 
@@ -39,6 +43,11 @@ main()
 =#
 
 # Testing 2D Rectangle Grids Below
+#=
+    A = GridRectangle(Grid1D(1.3,4), Grid1D(0.3,4))
+    B = GridRectangle(Grid1D(-1,1), Grid1D(-1,1))
+    solve2DRectangles(A, B)
+=#
     
 
 #= Grid Operators Testing 

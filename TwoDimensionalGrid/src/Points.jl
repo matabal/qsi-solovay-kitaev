@@ -19,7 +19,7 @@ const omega_rectangular = (1 + im) / sqrt(2)
 
 abstract type Point2D end
 
-struct Point2D_StandardForm <: Point
+struct Point2D_StandardForm <: Point2D
     a::Int
     b::Int
     c::Int
@@ -28,6 +28,12 @@ end
 getBullet(point::Point2D_StandardForm) = Point2D_StandardForm(-1*point.a, point.b, -1*point.c, point.d)
 getPointValue(point::Point2D_StandardForm) = point.a*(omega_rectangular)^3 + point.b*(omega_rectangular)^2 + point.c*(omega_rectangular) + point.d
 
+struct Point2D_SimpleForm <: Point2D
+    alpha::Real
+    beta::Real
+end
+getPointValue(point::Point2D_SimpleForm) = point.alpha + point.beta*im
+getBullet(point::Point2D_SimpleForm) = Point2D_SimpleForm(point.alpha, -1*point.beta)
 
 struct Point2D_NormalForm <: Point2D
 #= 2D Point in ring D[√2] (and Z[omega]) as defined in Ross & Selinger (2016), pg. 3. 

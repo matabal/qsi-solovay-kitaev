@@ -68,7 +68,7 @@ This function is used for obtaining the rescaling factor that will be used in re
 getRescalingValue(k::Int) = 1/(getPointValue(lambda_inverse)^k)
 
 # Below function rescales a solution obtained for the scaled grids. The rescaling factor is dynamically calculated an is of form 1/√2^k, where k is explained above.
-rescaleSolution(point::Point1D, scaling_factor::Int) = getPointValue(point) *getRescalingValue(scaling_factor)
+rescaleSolution(point::Point1D, scaling_factor::Int) = getPointValue(point) *getRescalingValue(scaling_factor) 
 
 function solve1D(A::Grid1D, B::Grid1D)
     #= Solves 1D grid problem for grids A and B, and returns solutions. Steps of these operation are defined 
